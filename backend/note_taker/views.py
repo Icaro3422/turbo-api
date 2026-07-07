@@ -4,8 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from rest_framework import viewsets
 
-from .serializers import UserCreateSerializer
+from .models import Category
+from .serializers import UserCreateSerializer, CategorySerializer
 
 
 class RegisterView(APIView):
@@ -39,3 +41,12 @@ class LoginView(APIView):
             {'detail': 'Invalid credentials'},
             status=status.HTTP_401_UNAUTHORIZED
         )
+
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+    pagination_class = None
+
+    def get_queryset(self):
+        return Category.objects.all()
