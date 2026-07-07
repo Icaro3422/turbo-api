@@ -1,13 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Category
-from .serializers import UserCreateSerializer, CategorySerializer
+from .models import Category, Note
+from .serializers import UserCreateSerializer, CategorySerializer, NoteSerializer
 
 
 class RegisterView(APIView):
@@ -50,3 +51,16 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return Category.objects.all()
+
+
+class NoteViewSet(viewsets.ModelViewSet):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
+
+    def get_queryset(self):
+        return Note.objects.filter(user=self.request.user).select_related('category')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Category
+from .models import Category, Note
 
 User = get_user_model()
 
@@ -33,3 +33,17 @@ class CategorySerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return obj.notes.filter(user=request.user).count()
         return 0
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        source='category',
+        write_only=True
+    )
+
+    class Meta:
+        model = Note
+        fields = ['id', 'title', 'description', 'last_update', 'category', 'category_id']
+        read_only_fields = ['id', 'last_update']
