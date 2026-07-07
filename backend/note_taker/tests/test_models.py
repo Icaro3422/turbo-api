@@ -17,7 +17,6 @@ class CategoryModelTest(TestCase):
 class NoteModelTest(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="testuser",
             email="test@example.com",
             password="testpass123"
         )

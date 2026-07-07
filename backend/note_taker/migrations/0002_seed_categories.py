@@ -4,10 +4,9 @@ from django.db import migrations
 def seed_categories(apps, schema_editor):
     Category = apps.get_model('note_taker', 'Category')
     categories = [
-        {"title": "Work", "color": "#3B82F6"},
-        {"title": "Personal", "color": "#10B981"},
-        {"title": "Ideas", "color": "#F59E0B"},
-        {"title": "Archive", "color": "#6B7280"},
+        {"title": "Random Thoughts", "color": "#EF9C66"},
+        {"title": "School", "color": "#FCDC94"},
+        {"title": "Personal", "color": "#78ABA8"},
     ]
     for cat in categories:
         Category.objects.get_or_create(title=cat["title"], defaults={"color": cat["color"]})
@@ -15,7 +14,7 @@ def seed_categories(apps, schema_editor):
 
 def reverse_seed(apps, schema_editor):
     Category = apps.get_model('note_taker', 'Category')
-    Category.objects.filter(title__in=["Work", "Personal", "Ideas", "Archive"]).delete()
+    Category.objects.filter(title__in=["Random Thoughts", "School", "Personal"]).delete()
 
 
 class Migration(migrations.Migration):
