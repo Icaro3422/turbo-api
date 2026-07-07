@@ -9,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Note
 from .serializers import UserCreateSerializer, CategorySerializer, NoteSerializer
+from .pagination import DefaultPagination
 
 
 class RegisterView(APIView):
@@ -47,7 +48,7 @@ class LoginView(APIView):
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
-    pagination_class = None
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         return Category.objects.all()
@@ -56,6 +57,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = DefaultPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category']
 

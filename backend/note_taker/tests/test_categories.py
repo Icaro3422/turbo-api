@@ -27,7 +27,7 @@ class CategoryAPITest(TestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/api/categories/')
 
-        work_category = next(c for c in response.data if c['title'] == 'Work')
+        work_category = next(c for c in response.data['results'] if c['title'] == 'Work')
         self.assertEqual(work_category['note_count'], 2)
 
     def test_retrieve_single_category(self):
