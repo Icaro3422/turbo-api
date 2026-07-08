@@ -251,52 +251,6 @@ pipenv run python manage.py test
    git push -u origin main
    ```
 
-### Vercel
-
-Vercel supports Django via WSGI. Follow these steps:
-
-1. **Generate `requirements.txt`** (Vercel uses pip, not pipenv):
-   ```bash
-   pipenv lock -r > requirements.txt
-   ```
-
-2. **Create `vercel.json`** in the project root:
-   ```json
-   {
-     "builds": [
-       {
-         "src": "manage.py",
-         "use": "@vercel/python"
-       }
-     ],
-     "routes": [
-       {
-         "src": "/(.*)",
-         "dest": "manage.py"
-       }
-     ]
-   }
-   ```
-
-3. **Set environment variables** in Vercel dashboard (**Settings > Environment Variables**):
-   ```
-   DATABASE_URL=postgresql://user:password@host:5432/dbname
-   SECRET_KEY=your-production-secret-key
-   DEBUG=False
-   ALLOWED_HOSTS=your-app.vercel.app
-   CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app
-   ```
-
-4. **Connect a managed PostgreSQL provider** (Vercel doesn't host databases):
-   - [Neon](https://neon.tech) — free tier available
-   - [Supabase](https://supabase.com) — free tier available
-   - [Railway](https://railway.app) — free tier available
-
-5. **Deploy:**
-   ```bash
-   vercel --prod
-   ```
-
 ## JWT Authentication
 
 - **Access token lifetime:** 60 minutes
