@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "manage.py",
+      "src": "turbo_base/wsgi.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "manage.py"
+      "dest": "turbo_base/wsgi.py"
     }
   ]
 }
