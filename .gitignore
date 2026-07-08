@@ -68,6 +68,9 @@ Pipfile.lock
 # Node
 node_modules/
 
+# Vercel
+.vercel/
+
 # AI Development (not part of Django project)
 .agents/
 skills-lock.json
