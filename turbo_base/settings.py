@@ -11,6 +11,18 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def build_allowed_hosts(
+    allowed_hosts_value,
+    vercel_url=None,
+    vercel_project_production_url=None,
+):
+    hosts = [host.strip() for host in allowed_hosts_value.split(',') if host.strip()]
+    for host in (vercel_url, vercel_project_production_url):
+        if host and host not in hosts:
+            hosts.append(host)
+    return hosts
+
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'django-insecure-dev-key-change-in-production'
@@ -18,7 +30,11 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = build_allowed_hosts(
+    os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1'),
+    os.environ.get('VERCEL_URL'),
+    os.environ.get('VERCEL_PROJECT_PRODUCTION_URL'),
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
